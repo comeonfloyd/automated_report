@@ -59,6 +59,8 @@ code_oper <- read_excel("code_oper.xlsx")
 
 df_all <- left_join(df_all, code_oper[,c(1,3)], by = c("CODE" = "CODE"))
 
+# Вот тут у нас не решаемая проблема с преобразованием chr в дату
+
 df_all$`BEGIN DATE` <-format(as.POSIXct(df_all$`BEGIN DATE`,format='%m/%d/%Y %H:%M:%S'),format='%d/%m/%Y')
 
 # N - аутстафф, y - собственный
