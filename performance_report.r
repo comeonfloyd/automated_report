@@ -49,7 +49,10 @@ df_all <- rbind.fill(df_bananas, df_drunk, df_dry, df_frov)
 df_hours <- read_excel("hours2107-0108.xlsx", 
                        skip = 4)
 
-df_hours$`Начало периода` <- as.Date.character(df_hours$`Начало периода`, '%d/%m/%Y')
+df_hours$new_date <- as.Date(df_hours$`Начало периода`, format = "%d.%m.%Y")
+df_hours$`Начало периода` <- df_hours$new_date
+
+df_hours$new_date <- NULL
 
 rm(df_bananas, df_drunk, df_dry, df_frov)
 
