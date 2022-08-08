@@ -49,10 +49,8 @@ df_all <- rbind.fill(df_bananas, df_drunk, df_dry, df_frov)
 df_hours <- read_excel("hours2107-0108.xlsx", 
                        skip = 4)
 
-df_hours$new_date <- as.Date(df_hours$`Начало периода`, format = "%d.%m.%Y")
-df_hours$`Начало периода` <- df_hours$new_date
 
-df_hours$new_date <- NULL
+df_hours$new_date <- as.Date(df_hours$`Начало периода`, format = "%d.%m.%Y")
 
 rm(df_bananas, df_drunk, df_dry, df_frov)
 
@@ -62,10 +60,25 @@ code_oper <- read_excel("code_oper.xlsx")
 
 df_all <- left_join(df_all, code_oper[,c(1,3)], by = c("CODE" = "CODE"))
 
-# Вот тут у нас не решаемая проблема с преобразованием chr в дату
-
 df_all$`BEGIN DATE` <-format(as.POSIXct(df_all$`BEGIN DATE`,format='%m/%d/%Y %H:%M:%S'),format='%d/%m/%Y')
 
+df_all2 <- df_all
+
+#df_all2$test <- str_subset(df_all2$USERKEY, '^st', negate = TRUE)
+
+
+
+df_all2 <- subset(df_all2, str_detect(df_all2$USERKEY, '^st', negate = TRUE))
+df_all2 <- subset(df_all2, str_detect(df_all2$USERKEY, '^dt', negate = TRUE)) 
+df_all2 <- subset(df_all2, str_detect(df_all2$USERKEY, '^ns', negate = TRUE)) 
+df_all2 <- subset(df_all2, str_detect(df_all2$USERKEY, '^br', negate = TRUE)) 
+df_all2 <- subset(df_all2, str_detect(df_all2$USERKEY, '[:upper:]', negate = TRUE)) 
+
+# df_all2 <- subset(df_all2, (str_detect(df_all2$USERKEY, '^br', negate = TRUE) 
+#                             | str_detect(df_all2$USERKEY, '^dt', negate = TRUE) 
+#                             | str_detect(df_all2$USERKEY, '^ns', negate = TRUE) 
+#                             | str_detect(df_all2$USERKEY, '^st', negate = TRUE) 
+#                             | str_detect(df_all2$USERKEY, '[:upper:]', negate = TRUE))) 
 # N - аутстафф, y - собственный
 
 #a <- unique(df_all$IS_STAFF)
@@ -85,3 +98,4 @@ df_pivot <- aggregate(cbind(`QTY`) ~ `Должность`+ `BEGIN DATE` + `РЦ`
 
 
 # И дальше смотрим
+
